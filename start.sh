@@ -1,6 +1,6 @@
 #!/bin/bash
 
-( cd ./catkin_ws && catkin_make )
+( cd ./catkin_ws && catkin clean && catkin_make )
 
 pwd
 
