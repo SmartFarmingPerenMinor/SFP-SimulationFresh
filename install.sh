@@ -15,7 +15,7 @@ source ~/.bashrc
 
 sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential python3-catkin python3-catkin-tools -y
 
-sudo apt install ros-noetic-moveit ros-noetic-moveit-plugins ros-noetic-moveit-planners -y
+sudo apt install ros-noetic-moveit ros-noetic-moveit-plugins ros-noetic-moveit-planners ros-noetic-joint-trajectory-controller -y
 
 sudo rosdep init && rosdep update
 
