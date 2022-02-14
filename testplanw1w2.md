@@ -18,12 +18,12 @@ Before starting the test you will have to install a version of ubuntu 20.**.** L
 
 ### Downloading the files
 For our testplan we will be executing everything from the home directory
-```
+```bash
 cd
 ```
 
 Then we will clone the repository like so
-```
+```bash
 git clone https://github.com/SmartFarmingPerenMinor/SFP-SimulationFresh.git
 ```
  
@@ -33,52 +33,90 @@ Going forward into testing we start of by installation, this can be done automat
 
 #### Automatic installation
 Change the directory to the location you installed (for us this is the home directory)
-``` 
+```bash
 cd ~/SFP-SimulationFresh 
 ```
 After changing directory we can start the installation using the installer
 
-\ If the installer is not a executable use ` chmod +x install.sh `
+If the installer is not a executable use ` chmod +x install.sh `
 
 
-\\ install the files!
-```
+install the files!
+```bash
 ./install.sh
 ```
 #### Manual installation
 Move to the correct directory
-```
+```bash
 cd ~/SFP-SimulationFresh
 ```
 
 Afterwards we will continue with all the steps written down in the install.sh
-```
+```bash
 sudo sh -c 'echo "deb http://packages.rog.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 ```
-```
+```bash
 sudo apt install curl -y
 ```
-```
+```bash
 curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 ```
-```
+```bash
 sudo apt update -y & sudo apt upgrade -y & sudo apt install build-essentials
 ```
-```
+```bash
 sudo apt install ros-noetic-desktop-full -y
 ```
-```
+```bash
 echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc &
 source ~/.bashrc
 ```
-```
+```bash
 sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential python3-catkin python3-catkin-tools -y
 ```
-```
+```bash
 rosdep update & rosdep init
 ```
 
 ### Starting the simulation
+#### Automatically
+Move to the correct directory
+```bash
+cd ~/SFP-SimulationFresh
+```
+
+Run the start script 
+```
+./startgazebo.sh
+```
+
+#### Manually
+First we build it
+
+```
+cd ./catkin_ws
+catkin_make
+```
+
+Then open up 2 terminals
+
+
+execute this in both terminals
+```
+cd ~/SFP-SimulationFresh
+source ./catkin_ws/devel/setup.bash
+```
+
+then execute this in the first
+```
+roslaunch ur_gazebo ur10.launch limited:=true
+```
+
+And this in the second
+```
+roslaunch ur10_e_moveit_config ur10_e_moveit_planning_execution.launch sim:=true limited:=true
+```
+
 
 ### Starting the kinematics
 
