@@ -35,15 +35,17 @@ Storage:
 - drive size 50GB minimum
 
 ### Downloading the files
-For our testplan we will be executing everything from the home directory
+For our testplan we will be executing everything from the home directory, this is purely out of convenience.
 ```bash
 cd
 ```
 
-Then we will clone the repository like so
+We will clone the repository using git if you do not have git installed please execute `` sudo apt install git`` after doing that you will be able to clone the repository using the command down below.
 ```bash
 git clone https://github.com/SmartFarmingPerenMinor/SFP-SimulationFresh.git
 ```
+
+This command will download all the files on your PC.
  
 
 ### Installation of the software
@@ -59,7 +61,7 @@ After changing directory we can start the installation using the installer
 If the installer is not a executable use ` chmod +x install.sh `
 
 
-install the files!
+install the files using this script we made!
 ```bash
 ./install.sh
 ```
@@ -69,69 +71,90 @@ Move to the correct directory
 cd ~/SFP-SimulationFresh
 ```
 
-Afterwards we will continue with all the steps written down in the install.sh
+We start of by adding the ros repository to the computer
 ```bash
 sudo sh -c 'echo "deb http://packages.rog.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 ```
+
+We install curl to download a key that we need to access the repository
 ```bash
 sudo apt install curl -y
 ```
+
+Add the key to your computer to access the repo
 ```bash
 curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 ```
+
+Download build tools and pull in the repository
 ```bash
 sudo apt update -y & sudo apt upgrade -y & sudo apt install build-essentials
 ```
+
+Download ros noetic full
 ```bash
 sudo apt install ros-noetic-desktop-full -y
 ```
+
+Vm's can be a annoying
+```bash
+sudo apt install ros-noetic-moveit ros-noetic-moveit-plugins ros-noetic-moveit-planners -y
+```
+
+Add ros to your bashrc to start it on boot and add the source right now so we do not need to restart the pc
 ```bash
 echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc &
 source ~/.bashrc
 ```
+
+Download some files we need to compile
 ```bash
 sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential python3-catkin python3-catkin-tools -y
 ```
+
+update ros
 ```bash
-rosdep update & rosdep init
+sudo rosdep init && rosdep update
 ```
 
 ### Starting the simulation
+
 #### Automatically
+
 Move to the correct directory
 ```bash
 cd ~/SFP-SimulationFresh
 ```
 
 Run the start script 
-```
+```bash
 ./startgazebo.sh
 ```
 
 #### Manually
+
 First we build it
 
-```
+```bash
 cd ./catkin_ws
 catkin_make
 ```
 
 Then open up 2 terminals
 
-
 execute this in both terminals
-```
+```bash
 cd ~/SFP-SimulationFresh
 source ./catkin_ws/devel/setup.bash
 ```
 
 then execute this in the first
-```
+```bash
 roslaunch ur_gazebo ur10.launch limited:=true
 ```
 
 And this in the second
-```
+```bash
 roslaunch ur10_e_moveit_config ur10_e_moveit_planning_execution.launch sim:=true limited:=true
 ```
 
