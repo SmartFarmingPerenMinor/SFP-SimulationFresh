@@ -78,6 +78,11 @@ Download ros noetic full
 sudo apt install ros-noetic-desktop-full -y
 ```
 
+Vm's can be a annoying
+```bash
+sudo apt install ros-noetic-moveit ros-noetic-moveit-plugins ros-noetic-moveit-planners -y
+```
+
 Add ros to your bashrc to start it on boot and add the source right now so we do not need to restart the pc
 ```bash
 echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc &
