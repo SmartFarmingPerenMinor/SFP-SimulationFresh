@@ -86,14 +86,14 @@ cd ~/SFP-SimulationFresh
 ```
 
 Run the start script 
-```
+```bash
 ./startgazebo.sh
 ```
 
 #### Manually
 First we build it
 
-```
+```bash
 cd ./catkin_ws
 catkin_make
 ```
@@ -102,7 +102,7 @@ Then open up 2 terminals
 
 
 execute this in both terminals
-```
+```bash
 cd ~/SFP-SimulationFresh
 source ./catkin_ws/devel/setup.bash
 ```
@@ -110,10 +110,10 @@ source ./catkin_ws/devel/setup.bash
 then execute this in the first
 ```
 roslaunch ur_gazebo ur10.launch limited:=true
-```
+```bash
 
 And this in the second
-```
+```bash
 roslaunch ur10_e_moveit_config ur10_e_moveit_planning_execution.launch sim:=true limited:=true
 ```
 
