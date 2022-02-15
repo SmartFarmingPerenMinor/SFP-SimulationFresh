@@ -47,31 +47,48 @@ def main():
     print(robot.get_current_state())
     print("")
 
-    cartesian_plan, fraction = plan_cartesian_path(move_group)
+    move_group.set_named_target('home')
 
-    execute_plan(move_group, cartesian_plan)
+    pose_goal = geometry_msgs.msg.Pose()
+    pose_goal.orientation.w = 1.0
+
+    received_x = float(input('Enter a x coordinate: '))
+    received_y = float(input('Enter a y coordinate: '))
+    received_z = float(input('Enter a z coordinate: '))
+
+    pose_goal.position.x = received_x
+    pose_goal.position.y = received_y
+    pose_goal.position.z = received_z
+    
+    move_group.set_pose_target(pose_goal)
+
+    plan = move_group.go(wait=True)
+
+    move_group.stop()
+
+    #move_group.clear_pose_targets()
+
+
+    #cartesian_plan, fraction = plan_cartesian_path(move_group)
+    
+    #move_group.execute(cartesian_plan)
 
 
 def plan_cartesian_path(move_group, scale=1):
     waypoints = []
     
-    wpose = move_group.get_current_pose().pose
-    wpose.position.z -= scale * 0.1
-    wpose.position.y += scale * 0.2
-    waypoints.append(copy.deepcopy(wpose))
+    start_pose = move_group.get_current_pose().pose
+    waypoints.append(copy.deepcopy(start_pose))
 
-    wpose.position.x += scale * 0.1
-    waypoints.append(copy.deepcopy(wpose))
+    second_pose = start_pose
+    
 
-    wpose.position.y -= scale * 0.1
-    waypoints.append(copy.deepcopy(wpose))
+    waypoints.append(copy.deepcopy(second_pose))
 
-    (plan, fraction) = move_group.compute_cartesian_path(
-            waypoints, 0.01, 0.0
-    )
+    (plan, fraction) = move_group.compute_cartesian_path(waypoints, 0.1, 0.0)
 
-    print(plan)
-    print(fraction)
+    print("plan: ", plan)
+    print("fraction: ", fraction)
 
     return plan, fraction
 
