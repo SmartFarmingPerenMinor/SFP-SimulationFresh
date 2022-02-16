@@ -68,22 +68,38 @@ def main():
     # Set the first waypoint to be the starting pose
     # Append the pose to the waypoints list
     waypoints.append(start_pose)
-
     wpose = deepcopy(start_pose)
 
-    wpose.position.x += 0.1 
-    waypoints.append(deepcopy(wpose))
+    keep_trying: bool = True
+    fraction: float = 0.0
+    allowed_fraction: float = 0.75
+    attempts: int = 0
 
-    wpose.position.y += 0.1
-    waypoints.append(deepcopy(wpose))
+    while(keep_trying):
 
-    
-    wpose.position.z += 0.3
-    waypoints.append(deepcopy(wpose))
+        try:
+            rx, ry, rz = input('Enter x, y, z coordinates \n[example 0.1, 0, 0.2]: ').split(",")
+            
+            wpose.position.x += float(rx)
+            wpose.position.y += float(ry)
+            wpose.position.z += float(rz)
+            waypoints.append(deepcopy(wpose))
 
-    fraction = 0.0
-    maxtries = 5
-    attempts = 0
+            exit_str:str = input('More coordinates? [Type yes for more]').lower()
+
+            if exit_str == "yes":
+                continue
+            else:
+                allowed_fraction = float(input("Enter allowed fraction [Default .75 for 75%]: ") or ".75")
+                maxtries: int = int(input("Enter maximum attempts [Default 5]:") or "5")
+                keep_trying = False
+
+        except ValueError:
+            print("Invalid input")
+            
+        else:
+            break
+
     
 
     # Plan the Cartesian path connecting the waypoints
@@ -103,7 +119,7 @@ def main():
             + " attempts...")
 
         # If we have a complete plan, execute the trajectory
-        if fraction > 0.75:
+        if fraction > allowed_fraction:
             rospy.loginfo("Path computed successfully. Moving the arm.")
             move_group.execute(plan)
             rospy.sleep(1)
