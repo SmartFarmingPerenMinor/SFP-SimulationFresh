@@ -16,8 +16,8 @@ class ur10e():
 		self.pose = Pose()
 		self.moveGroup = moveit_commander.MoveGroupCommander(groupName)
 		self.robot = moveit_commander.RobotCommander()
-	    self.scene = moveit_commander.PlanningSceneInterface()
-    	self.display_trajectory_pub = rospy.Publisher("move_group/display_planned_path", DisplayTrajectory, queue_size=20)
+		self.scene = moveit_commander.PlanningSceneInterface()
+		self.display_trajectory_pub = rospy.Publisher("move_group/display_planned_path", DisplayTrajectory, queue_size=20)
 		self.running = True
 
 	def setPos(self, x, y, z):
@@ -26,7 +26,7 @@ class ur10e():
 
 	def moveToPos(self):
 		print("W orientation: ", self.pose.orientation.w, ", x value: ", self.pose.position.x, ", y value: ", self.pose.position.y, ", z value: ", self.pose.position.z)
-		self.moveGroup.set_pose_target(pose)
+		self.moveGroup.set_pose_target(self.pose)
 		self.moveGroup.go(wait=True)
 		self.moveGroup.stop()
 		self.moveGroup.clear_pose_targets()
@@ -48,6 +48,16 @@ class ur10e():
 		self.cleanUp()
 
 ur = ur10e('ur10_e_move_test', "manipulator")
-ur.setPos(1,2,3)
-ur.moveToPos()
+
+while (True):
+	x = float(input("give X value:\n"))
+	y = float(input("give Y value:\n"))
+	z = float(input("give Z value:\n"))
+	ur.setPos(1,2,3)
+	ur.moveToPos()
+	str = input ("give 'y' to keep sending commands, 'n' to stop sendig\n")
+	if (str == "n"):
+		break
+
 ur.cleanUp()
+
