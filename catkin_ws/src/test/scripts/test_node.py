@@ -90,8 +90,8 @@ def main():
             if exit_str == "yes":
                 continue
             else:
-                allowed_fraction = float(input("Enter allowed fraction [Default .75 for 75%]: ") or ".75")
-                maxtries: int = int(input("Enter maximum attempts [Default 5]:") or "5")
+                allowed_fraction = float(input("Enter allowed fraction [Default .9 for 90%]: ") or ".9")
+                maxtries: int = int(input("Enter maximum attempts [Default 35]:") or "35")
                 keep_trying = False
 
         except ValueError:

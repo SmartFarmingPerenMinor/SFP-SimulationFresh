@@ -1,4 +1,9 @@
-<sdf version='1.7'>
+#!/bin/bash
+
+pTree=`pwd`'/../models'
+dir=`pwd`
+
+echo "<sdf version='1.7'>
   <world name='default'>
     <model name='ground_plane'>
       <static>1</static>
@@ -85,7 +90,7 @@
         <visual name='visual'>
           <pose>0 -0.008746 1.829789 1.579713 -0 0</pose>
           <geometry>
-<mesh><uri>/home/thomas/SFP-SimulationFresh/catkin_ws/src/test/worlds/../models/peren.dae</uri></mesh>
+<mesh><uri>$pTree/peren.dae</uri></mesh>
           </geometry>
           <material>
             <lighting>1</lighting>
@@ -103,7 +108,7 @@
           <max_contacts>10</max_contacts>
           <pose>0 -0.008746 1.829789 1.579713 -0 0</pose>
           <geometry>
-            <mesh><uri>/home/thomas/SFP-SimulationFresh/catkin_ws/src/test/worlds/../models/peren.dae</uri></mesh>
+            <mesh><uri>$pTree/peren.dae</uri></mesh>
           </geometry>
           <surface>
             <friction>
@@ -204,4 +209,4 @@
       </camera>
     </gui>
   </world>
-</sdf>
+</sdf>" > $dir/myWorld.world
