@@ -85,10 +85,7 @@
         <visual name='visual'>
           <pose>0 -0.008746 1.829789 1.579713 -0 0</pose>
           <geometry>
-            <mesh>
-              <uri>model://peren.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
+            <mesh><uri>/home/anthony/Desktop/SFP/SFP-SimulationFresh/catkin_ws/src/test/models</uri></mesh>
           </geometry>
           <material>
             <lighting>1</lighting>
@@ -106,10 +103,7 @@
           <max_contacts>10</max_contacts>
           <pose>0 -0.008746 1.829789 1.579713 -0 0</pose>
           <geometry>
-            <mesh>
-              <uri>model://peren.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
+            <mesh><uri>/home/anthony/Desktop/SFP/SFP-SimulationFresh/catkin_ws/src/test/models</uri></mesh>
           </geometry>
           <surface>
             <friction>
