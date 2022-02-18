@@ -19,4 +19,4 @@ sudo apt install ros-noetic-moveit ros-noetic-moveit-plugins ros-noetic-moveit-p
 
 sudo rosdep init && rosdep update
 
-
+cd ./catkin_ws/src/test/worlds/ && ./setup.sh
