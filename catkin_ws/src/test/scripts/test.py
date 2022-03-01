@@ -62,6 +62,16 @@ def main():
     
     move_group.set_pose_target(pose_goal)
 
+    #plan the path
+    plan = move_group.plan()
+    plan_succes = plan[0]
+
+    #check if the resulting path is valid and exit if not
+    if plan_succes == False:
+        print("planning failed, exiting")
+        return
+
+    print("planning succeded, moving")
     plan = move_group.go(wait=True)
 
     move_group.stop()
