@@ -1,2 +1,2 @@
 *.log
-catkin_ws/src/test/worlds/myWorld.world
+/catkin_ws/src/test/worlds/myWorld.world
