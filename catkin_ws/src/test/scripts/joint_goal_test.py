@@ -47,41 +47,21 @@ def main():
     print(robot.get_current_state())
     print("")
 
-    move_group.set_named_target('home')
+    #We get the joint values from the group and change some of the values:
+    joint_goal = move_group.get_current_joint_values()
+    joint_goal[0] = 0
+    joint_goal[1] = -tau / 4
+    joint_goal[2] = -tau / 8
+    joint_goal[3] = -tau / 4
+    joint_goal[4] = 0
+    joint_goal[5] = tau / 6  # 1/6 of a turn
 
-    pose_goal = geometry_msgs.msg.Pose()
-    pose_goal.orientation.w = 1.0
+    # The go command can be called with joint values, poses, or without any
+    # parameters if you have already set the pose or joint target for the group
+    move_group.go(joint_goal, wait=True)
 
-    received_x = float(input('Enter a x coordinate: '))
-    received_y = float(input('Enter a y coordinate: '))
-    received_z = float(input('Enter a z coordinate: '))
-
-    pose_goal.position.x = received_x
-    pose_goal.position.y = received_y
-    pose_goal.position.z = received_z
-    
-    move_group.set_pose_target(pose_goal)
-
-    #plan the path
-    plan = move_group.plan()
-    plan_succes = plan[0]
-
-    #check if the resulting path is valid and exit if not
-    if plan_succes == False:
-        print("planning failed, exiting")
-        return
-
-    print("planning succeded, moving")
-    plan = move_group.go(wait=True)
-
+    # Calling ``stop()`` ensures that there is no residual movement
     move_group.stop()
-
-    #move_group.clear_pose_targets()
-
-
-    #cartesian_plan, fraction = plan_cartesian_path(move_group)
-    
-    #move_group.execute(cartesian_plan)
 
 
 def plan_cartesian_path(move_group, scale=1):
