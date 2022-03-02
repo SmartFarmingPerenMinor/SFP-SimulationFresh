@@ -62,7 +62,7 @@ def get_gazebo_models():
                 print(model_properties)
             except rospy.ServiceException:
                 success = False
-            
+    return resp1        
 
 def show_gazebo_model_states():
         try:
