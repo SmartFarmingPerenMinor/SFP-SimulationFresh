@@ -49,14 +49,14 @@ python3 spawn_collision_blocks.py
 
 drag the cyaan orp at the end effector (end of the robotic arm) around
 
-![moving the end effector]()
+![moving the end effector](https://github.com/SmartFarmingPerenMinor/SFP-SimulationFresh/blob/master/catkin_ws/src/testplan/pictures/end_effector.png)
 
 
 #### Moving in the arm Rviz
 
 After moving  the arm press the **Plan & Execute** button
 
-![moving the arm]()
+![moving the arm](https://github.com/SmartFarmingPerenMinor/SFP-SimulationFresh/blob/master/catkin_ws/src/testplan/pictures/plan_execute.png)
 
 If no part of the arm is **red** the arm will move to set point
 Dont force the end effector in a collision box this will make it impossible to move the arm
