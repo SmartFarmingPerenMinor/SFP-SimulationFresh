@@ -28,14 +28,14 @@ class GazeboModel:
 
 def main():    
 
-    # move_group = init("manipulator")
+    move_group = init("manipulator")
     # plant_tree()
     # show_gazebo_models()
     print("Getting models!")
-    get_gazebo_models()
-    # waypoints, max_tries, allowed_fraction = set_waypoints(move_group)
-    # print(f"waypoints: {waypoints},\n max_tries: {max_tries},\n allowed_fraction: {allowed_fraction}\n")
-    # cartesian_path_execution(move_group, waypoints, max_tries, allowed_fraction)
+    # get_gazebo_models()
+    waypoints, max_tries, allowed_fraction = set_waypoints(move_group)
+    print(f"waypoints: {waypoints},\n max_tries: {max_tries},\n allowed_fraction: {allowed_fraction}\n")
+    cartesian_path_execution(move_group, waypoints, max_tries, allowed_fraction)
 
     # Shut down MoveIt cleanly
     moveit_commander.roscpp_shutdown()
