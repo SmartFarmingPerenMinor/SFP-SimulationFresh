@@ -34,6 +34,7 @@ def main():
     # get_gazebo_models()
     waypoints, max_tries, allowed_fraction = set_waypoints(move_group)
     print(f"waypoints:\n{waypoints},\n max_tries: {max_tries},\n allowed_fraction: {allowed_fraction}\n")
+    
     cartesian_path_execution(move_group, waypoints, max_tries, allowed_fraction)
 
     # Shut down MoveIt cleanly
