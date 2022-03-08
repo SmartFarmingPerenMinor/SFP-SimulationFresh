@@ -31,10 +31,10 @@ def main():
     move_group = init("manipulator")
     # plant_tree()
     # show_gazebo_models()
-    print("Getting models!")
     # get_gazebo_models()
     waypoints, max_tries, allowed_fraction = set_waypoints(move_group)
-    print(f"waypoints: {waypoints},\n max_tries: {max_tries},\n allowed_fraction: {allowed_fraction}\n")
+    print(f"waypoints:\n{waypoints},\n max_tries: {max_tries},\n allowed_fraction: {allowed_fraction}\n")
+    
     cartesian_path_execution(move_group, waypoints, max_tries, allowed_fraction)
 
     # Shut down MoveIt cleanly
@@ -208,6 +208,9 @@ def cartesian_path_execution(move_group: MoveGroupCommander, waypoints: list, ma
 
     fraction: float = 0.0
     attempts: int = 0
+    # current_time: int
+    # start_time: int = rospy.get_time()
+
 
         # Plan the Cartesian path connecting the waypoints
     while fraction < 1.0 and attempts < max_tries:
@@ -218,6 +221,10 @@ def cartesian_path_execution(move_group: MoveGroupCommander, waypoints: list, ma
         True) # avoid_collisions
         # Increment the number of attempts
         attempts += 1
+        # current_time = rospy.get_time() - start_time
+        # print("Time elapsed: "+ current_time)
+        # for joint_pos_v in move_group.get_current_joint_values():
+        #     print("Joint position: " + joint_pos_v)
 
         # Print out a progress message
         if attempts % 10 == 0:

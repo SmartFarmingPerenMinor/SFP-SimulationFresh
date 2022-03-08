@@ -38,6 +38,8 @@
     <xacro:property name="wrist_1_mass" value="1.96" />
     <xacro:property name="wrist_2_mass" value="1.96" />
     <xacro:property name="wrist_3_mass" value="0.202" />
+    <xacro:property name="height3" value="1" /> <!-- Link 3 -->
+    <xacro:property name="camera_link" value="0.02" /> <!-- Size of square 'camera' box -->
 
     <!-- These parameters are borrowed from the urcontrol.conf file
         but are not verified for the correct permutation.
@@ -339,6 +341,36 @@
       </collision>
     </link>
 
+    <joint name="camera_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.005 0.0 0.055" rpy="0 0 0"/>
+    <parent link="${prefix}ee_link"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <!-- Camera -->
+  <link name="camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_link} ${camera_link} ${camera_link}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_link} ${camera_link} ${camera_link}"/>
+      </geometry>
+      <material name="LightGrey"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
     <xacro:ur_arm_transmission prefix="${prefix}" />
     <xacro:ur_arm_gazebo prefix="${prefix}" />
 
