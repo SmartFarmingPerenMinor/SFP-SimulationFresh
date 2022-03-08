@@ -70,6 +70,17 @@ The following steps wil fix it:
 - ./stop_ros.sh
 - ./startrvizgazebo.sh
 
+
+### Automate collision detection with world
+
+The arm wil try to plan move to reach the given point if the point is bellow 0.0 on the z-axis it will fill.
+The other point should work. 
+
+```bash
+cd SFP-SimulationFresh/catkin_ws/src/testplan/scripts
+python3 auto_world_collision_test.py
+```
+
 ## Criteria for succes
 #### Download criteria
 - Can you download the files?
