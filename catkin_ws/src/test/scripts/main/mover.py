@@ -2,6 +2,8 @@
 
 import rospy
 import moveit_commander
+#For vsc.. intellisense
+from moveit_commander import RobotCommander, PlanningSceneInterface, MoveGroupCommander, ApplyPlanningSceneRequest
 import moveit_msgs.msg
 import geometry_msgs.msg
 
@@ -16,17 +18,17 @@ class endEffectorMover:
         rospy.init_node("test_move", anonymous=True)
 
         # instantiate the robot
-        self.robot =  moveit_commander.RobotCommander()
+        self.robot = RobotCommander()
 
         # instantiate the scene
-        self.scene = moveit_commander.PlanningSceneInterface()
+        self.scene = PlanningSceneInterface()
 
         # instantiate moveGroupCommander
         group_name = 'manipulator'
-        self.move_group = moveit_commander.MoveGroupCommander(group_name)
+        self.move_group = MoveGroupCommander(group_name)
 
         # subscribe to the topic
-        display_trajectory_publisher = rospy.Publisher(
+        self.display_trajectory_publisher = rospy.Publisher(
                 "/move_group/display_planned_path",
                 moveit_msgs.msg.DisplayTrajectory,
                 queue_size = 20,
@@ -54,17 +56,24 @@ class endEffectorMover:
         return qw, qx, qy, qz
 
     def printInfo(self):
+
         planning_frame = self.move_group.get_planning_frame()
         print("=== planning frame: %s" % planning_frame)
 
+        planning_pipeline = self.move_group.get_planning_pipeline_id()
+        print("=== planning pipeline: %s" % planning_pipeline)
+ 
         eef_link = self.move_group.get_end_effector_link()
         print("=== end effector link: %s" % eef_link)
 
         group_names = self.robot.get_group_names()
-        print("=== available planning groups:", self.robot.get_group_names())
+        print("=== available planning groups:", group_names)
 
+        robot_state = self.robot.get_current_state()
         print("=== robot state")
-        print(self.robot.get_current_state())
+        print(robot_state)
+
+        
         print("")
 
     def promptLocationAndMove(self):
@@ -78,7 +87,6 @@ class endEffectorMover:
                 print("Invalid value!")
             else:
                 fill_in = False
-                break
 
         self.moveTo(x,y,z)
 
@@ -90,23 +98,31 @@ class endEffectorMover:
         pose_goal.position.y = y
         pose_goal.position.z = z
 
-        self.move_group.set_pose_target(pose_goal)
+        move_group = self.move_group
+
+        move_group.set_pose_target(pose_goal)
 
         #plan the path
-        plan = self.move_group.plan()
-        plan_succes = plan[0]
+        plan = move_group.plan()
+        plan_success = plan[0]
 
         #check if the resulting path is valid and exit if not
-        if plan_succes == False:
+        if plan_success == False:
             print("planning failed, press CTRL-Z to exit or request a new coordinate")
             return
-
+        
+        # self.visualizePlanning(plan)
         print("planning succeded, moving")
-        plan = self.move_group.go(wait=True)
+        plan = move_group.go(wait=True)
 
-        self.move_group.stop()
+        move_group.stop()
+        move_group.clear_pose_targets()
 
         print("path executed press CTRL-Z to exit or request a new coordinate")
         self.promptLocationAndMove()
 
-
+    def visualizePlanning(self, plan):
+        display_trajectory = moveit_msgs.msg.DisplayTrajectory()
+        display_trajectory.trajectory_start = self.robot.get_current_state()
+        display_trajectory.trajectory.append(plan)
+        self.display_trajectory_publisher.publish(display_trajectory)
