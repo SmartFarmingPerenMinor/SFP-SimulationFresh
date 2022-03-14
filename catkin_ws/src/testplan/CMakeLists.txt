@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(test)
+project(testplan)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -15,7 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package()
 
-catkin_install_python(PROGRAMS scripts/talker.py
+catkin_install_python(PROGRAMS scripts/auto_world_collision_test.py
+  scripts/spawn_collision_blocks.py
 	DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION} )
 
 ## System dependencies are found with CMake's conventions
