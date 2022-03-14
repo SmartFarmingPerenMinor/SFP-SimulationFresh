@@ -3,8 +3,9 @@
 import rospy
 import moveit_commander
 #For vsc.. intellisense
-from moveit_commander import RobotCommander, PlanningSceneInterface, MoveGroupCommander, ApplyPlanningSceneRequest
+from moveit_commander import RobotCommander, PlanningSceneInterface, MoveGroupCommander
 import moveit_msgs.msg
+from moveit_msgs.msg import PlanningSceneWorld
 import geometry_msgs.msg
 
 from math import pi, tau, dist, fabs, cos, sin
@@ -36,17 +37,6 @@ class endEffectorMover:
 
         # setup current state as home
         self.move_group.set_named_target('home')
-        
-        self.addPlane("ground", 0,0,0,0,0,1)
-
-
-    def addPlane(self, planeName :  str, x : float, y: float, z: float, normX: float, normY: float, normZ: float):
-        rospy.sleep(1)
-        plane_pose = geometry_msgs.msg.PoseStamped()
-        plane_pose.header.frame_id = self.move_group.get_planning_frame()
-        plane_pose.pose.orientation.w, plane_pose.pose.position.x, plane_pose.pose.position.y, plane_pose.pose.position.z = self.calcQuaternions(x, y, z)
-        self.scene.add_plane(planeName, plane_pose, normal=(normX,normY,normZ))
-        print("[mover] added ground plane")
 
     def calcQuaternions(self, phi, theta, psi):
         qw = cos(phi/2) * cos(theta/2) * cos(psi/2) + sin(phi/2) * sin(theta/2) * sin(psi/2)
@@ -102,6 +92,7 @@ class endEffectorMover:
 
         move_group.set_pose_target(pose_goal)
 
+        move_group.construct_motion_plan_request()
         #plan the path
         plan = move_group.plan()
         plan_success = plan[0]
@@ -112,7 +103,7 @@ class endEffectorMover:
             return
         
         # self.visualizePlanning(plan)
-        print("planning succeded, moving")
+        print("planning succeeded, moving")
         plan = move_group.go(wait=True)
 
         move_group.stop()
