@@ -43,12 +43,3 @@ class cameraViewer:
             else:
                 rospy.loginfo("Image not found!")
             self.hz.sleep()
-
-def main():
-    rospy.init_node('test_vision_node')
-    follower = cameraViewer()
-    follower.start()
-    rospy.spin()
-
-if __name__ == "__main__":
-    main()
