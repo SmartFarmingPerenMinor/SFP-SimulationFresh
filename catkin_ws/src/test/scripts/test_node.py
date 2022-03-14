@@ -25,6 +25,14 @@ class GazeboModel:
         self.name = name
         self.relative_entity_name = relative_entity_name
 
+class MoveGroupObj:
+
+    def __init__(self, move_group_name: str):
+        moveit_commander.roscpp_initialize(sys.argv)
+        self.move_group: MoveGroupCommander = MoveGroupCommander(move_group_name)
+        self.robot: RobotCommander = RobotCommander()
+        self.scene: PlanningSceneInterface = PlanningSceneInterface()
+        self.ps: PlanningScene = PlanningScene()
 
 def main():    
 
@@ -82,9 +90,6 @@ def show_gazebo_model_states():
             rospy.loginfo("Get Model State service call failed:  {0}".format(e))
 
 def plant_tree():
-    robot = RobotCommander()
-    scene = PlanningSceneInterface()
-    ps = PlanningScene()
 
     rospy.sleep(2)
     tree_name = "my_mesh"
@@ -102,19 +107,13 @@ def plant_tree():
     rospy.sleep(2)
     # Connect to the manip move group
 
-def init(move_group_name: str) -> MoveGroupCommander:
-    # Initialize the move_group API
-    moveit_commander.roscpp_initialize(sys.argv)
+def init(move_group_name: str) -> MoveGroupObj:
     # Initialize the ROS node
     rospy.init_node('ur10_e_move_test')
-    robot = RobotCommander()
-    scene = PlanningSceneInterface()
-    ps = PlanningScene()
+    move_grouper = MoveGroupObj(move_group_name)
 
-    rospy.sleep(2)
-
-    move_group = MoveGroupCommander(move_group_name)
-
+    move_group: MoveGroupCommander = move_grouper.move_group
+    robot: RobotCommander = move_grouper.robot
 
     # Allow replanning to increase the odds of a solution
     move_group.allow_replanning(True)
@@ -153,7 +152,7 @@ def init(move_group_name: str) -> MoveGroupCommander:
     move_group.clear_pose_targets()
     move_group.set_goal_tolerance
 
-    return move_group
+    return move_grouper
 
 def set_waypoints(move_group: MoveGroupCommander) -> Tuple[list, int, float]:
     

@@ -11,12 +11,17 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  cv_bridge
+  image_transport
 )
+find_package(OpenCV REQUIRED)
 
 catkin_package()
 
-catkin_install_python(PROGRAMS scripts/talker.py
-	DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION} )
+catkin_install_python(PROGRAMS 
+  scripts/talker.py
+  scripts/test_vision_node.py
+DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION} )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -123,6 +128,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library

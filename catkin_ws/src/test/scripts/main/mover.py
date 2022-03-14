@@ -68,9 +68,17 @@ class endEffectorMover:
         print("")
 
     def promptLocationAndMove(self):
-        x = float(input('Enter a x coordinate: '))
-        y = float(input('Enter a y coordinate: '))
-        z = float(input('Enter a z coordinate: '))
+        fill_in: bool = True
+        while(fill_in):
+            try:
+                x = float(input('Enter a x coordinate: '))
+                y = float(input('Enter a y coordinate: '))
+                z = float(input('Enter a z coordinate: '))
+            except ValueError:
+                print("Invalid value!")
+            else:
+                fill_in = False
+                break
 
         self.moveTo(x,y,z)
 
