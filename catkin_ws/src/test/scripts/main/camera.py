@@ -30,14 +30,3 @@ class cameraViewer:
         cv2.waitKey(1)
         # Show the total number of contours that were detected
         # print('Total number of contours detected: ' + str(len(contours)))
-    
-    # def start(self):
-    #     rospy.loginfo("Starting image publishing")
-    #     #rospy.spin()
-    #     while not rospy.is_shutdown():
-    #         #br = CvBridge()
-    #         if self.image is not None:
-    #             self.image_pub.publish(self.bridge.cv2_to_imgmsg(self.image))
-    #         else:
-    #             rospy.loginfo("Image not found!")
-    #         self.hz.sleep()
