@@ -1,17 +1,25 @@
 #!/usr/bin/python3
 
 import sys
+import rospy
 
 from mover import endEffectorMover
 from camera import cameraViewer
+from depth_camera import depthViewer
 from world import worldBuilder
+
 def main():
     endEffectorMoverObject = endEffectorMover(sys.argv)
     worldBuilderObj = worldBuilder(endEffectorMoverObject)
     worldBuilderObj.addPlane("ground_plane")
-    cameraViewerObject = cameraViewer()
+    # cameraViewerObject = cameraViewer()
+    depthViewerObject = depthViewer()
     endEffectorMoverObject.promptLocationAndMove()
 
 
 if __name__ == "__main__":
-    main()
+    try: 
+        while not rospy.is_shutdown():
+            main()
+    except rospy.ROSInterruptException:
+        rospy.loginfo("Process interrupted!")

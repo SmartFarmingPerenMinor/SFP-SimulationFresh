@@ -3,10 +3,11 @@
 import rospy
 import moveit_commander
 #For vsc.. intellisense
-from moveit_commander import RobotCommander, PlanningSceneInterface, MoveGroupCommander
-import moveit_msgs.msg
-from moveit_msgs.msg import PlanningSceneWorld
-import geometry_msgs.msg
+from moveit_commander import RobotCommander, PlanningSceneInterface, MoveGroupCommander, RobotTrajectory
+from moveit_msgs.msg import PlanningSceneWorld, DisplayTrajectory
+from geometry_msgs.msg import Pose
+import tf
+import tf2_ros
 
 from math import pi, tau, dist, fabs, cos, sin
 
@@ -31,7 +32,7 @@ class endEffectorMover:
         # subscribe to the topic
         self.display_trajectory_publisher = rospy.Publisher(
                 "/move_group/display_planned_path",
-                moveit_msgs.msg.DisplayTrajectory,
+                DisplayTrajectory,
                 queue_size = 20,
         )
 
@@ -81,7 +82,7 @@ class endEffectorMover:
         self.moveTo(x,y,z)
 
     def moveTo(self, x, y, z):
-        pose_goal = geometry_msgs.msg.Pose()
+        pose_goal = Pose()
         pose_goal.orientation.w = 1.0
 
         pose_goal.position.x = x
@@ -95,7 +96,8 @@ class endEffectorMover:
         move_group.construct_motion_plan_request()
         #plan the path
         plan = move_group.plan()
-        plan_success = plan[0]
+        plan_success: bool = plan[0]
+        robot_trajectory: RobotTrajectory = plan[1]
 
         #check if the resulting path is valid and exit if not
         if plan_success == False:
@@ -113,7 +115,7 @@ class endEffectorMover:
         self.promptLocationAndMove()
 
     def visualizePlanning(self, plan):
-        display_trajectory = moveit_msgs.msg.DisplayTrajectory()
+        display_trajectory = DisplayTrajectory()
         display_trajectory.trajectory_start = self.robot.get_current_state()
         display_trajectory.trajectory.append(plan)
         self.display_trajectory_publisher.publish(display_trajectory)
