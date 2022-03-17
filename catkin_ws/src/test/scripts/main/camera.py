@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from cgitb import enable
+from tkinter import E
 import rospy
 import numpy as np
 from sensor_msgs.msg import Image
@@ -23,8 +25,11 @@ class cameraViewer:
         # new_image = self.image.copy()
         self.image = image
 
+        if self.enable_contour:
+            cv2.imshow('Detected contours', self.contour()[1])
+        else:
+            cv2.imshow('Camera Output', image)
         
-        cv2.imshow('Detected contours', self.contour()[1])
         cv2.waitKey(2)
 
         # Show the total number of contours that were detected
@@ -39,7 +44,7 @@ class cameraViewer:
         shrinked = cv2.dilate(inverted_binary,kernel,iterations = 1)
         edged=cv2.Canny(shrinked,30,200)
         contours, hierarchy = cv2.findContours(edged, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
+    
         all_contours = np.concatenate(contours)
         return self.contour_hulls(all_contours)
 

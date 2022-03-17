@@ -13,8 +13,10 @@ def main():
     worldBuilderObj = worldBuilder(endEffectorMoverObject)
     worldBuilderObj.addPlane("ground_plane")
     # cameraViewerObject = cameraViewer()
-    depthViewerObject = depthViewer()
+    depthViewerObject = depthViewer("/ur10e/camera1/depth/image_raw")
     endEffectorMoverObject.promptLocationAndMove()
+
+
 
 
 if __name__ == "__main__":
