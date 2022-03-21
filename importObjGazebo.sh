@@ -50,7 +50,7 @@ echo "<sdf version='1.7'>
           <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
+              <name>Gazebo/Grass</name>
             </script>
           </material>
         </visual>
@@ -119,7 +119,7 @@ do
             <lighting>1</lighting>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
+              <name>Gazebo/Wood</name>
             </script>
             <shader type='pixel'/>
           </material>
