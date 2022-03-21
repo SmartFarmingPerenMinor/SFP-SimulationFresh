@@ -3,11 +3,10 @@
 import rospy
 import moveit_commander
 #For vsc.. intellisense
-from moveit_commander import RobotCommander, PlanningSceneInterface, MoveGroupCommander, RobotTrajectory
-from moveit_msgs.msg import PlanningSceneWorld, DisplayTrajectory
+from moveit_commander import RobotCommander, PlanningSceneInterface, MoveGroupCommander
+from moveit_msgs.msg import DisplayTrajectory
 from geometry_msgs.msg import Pose
-import tf
-import tf2_ros
+
 
 from math import pi, tau, dist, fabs, cos, sin
 
@@ -17,7 +16,7 @@ class endEffectorMover:
     def __init__(self, arguments):
         # init commander / rospy node
         moveit_commander.roscpp_initialize(arguments)
-        rospy.init_node("test_move", anonymous=True)
+        rospy.init_node("test_move", disable_signals=True)
 
         # instantiate the robot
         self.robot = RobotCommander()
@@ -28,7 +27,9 @@ class endEffectorMover:
         # instantiate moveGroupCommander
         group_name = 'manipulator'
         self.move_group = MoveGroupCommander(group_name)
-
+        rospy.on_shutdown(self.move_group.stop)
+        rospy.on_shutdown(self.move_group.clear_pose_targets)
+        rospy.on_shutdown(moveStop)
         # subscribe to the topic
         self.display_trajectory_publisher = rospy.Publisher(
                 "/move_group/display_planned_path",
@@ -68,18 +69,29 @@ class endEffectorMover:
         print("")
 
     def promptLocationAndMove(self):
-        fill_in: bool = True
-        while(fill_in):
-            try:
-                x = float(input('Enter a x coordinate: '))
-                y = float(input('Enter a y coordinate: '))
-                z = float(input('Enter a z coordinate: '))
-            except ValueError:
-                print("Invalid value!")
-            else:
-                fill_in = False
+        moreMovement: bool = True
+        try:
+            button = input("[Enter] for coord, [H] for home: ")
+        except ValueError:
+            print("Invalid value. Enter a valid value.")
+        if button == "":
+            while(moreMovement):
+                try:
+                    x = float(input('Enter a x coordinate: '))
+                    y = float(input('Enter a y coordinate: '))
+                    z = float(input('Enter a z coordinate: '))
+                except ValueError:
+                    print("Invalid value. Enter a valid value.")
+                else:
+                    moreMovement = False
 
-        self.moveTo(x,y,z)
+            self.moveTo(x,y,z)
+        elif button.lower() == "h":
+            self.move_group.set_named_target("home")
+            self.move_group.go(wait=True)
+
+            self.move_group.stop()
+            self.move_group.clear_pose_targets()
 
     def moveTo(self, x, y, z):
         pose_goal = Pose()
@@ -97,25 +109,38 @@ class endEffectorMover:
         #plan the path
         plan = move_group.plan()
         plan_success: bool = plan[0]
-        robot_trajectory: RobotTrajectory = plan[1]
 
         #check if the resulting path is valid and exit if not
         if plan_success == False:
-            print("planning failed, press CTRL-Z to exit or request a new coordinate")
+            print("Planning failed!")
+            self.promptMove()
             return
         
         # self.visualizePlanning(plan)
-        print("planning succeeded, moving")
+        print("Planning succeeded, moving")
         plan = move_group.go(wait=True)
 
         move_group.stop()
         move_group.clear_pose_targets()
 
-        print("path executed press CTRL-Z to exit or request a new coordinate")
-        self.promptLocationAndMove()
+        self.promptMove()
+        
 
     def visualizePlanning(self, plan):
         display_trajectory = DisplayTrajectory()
         display_trajectory.trajectory_start = self.robot.get_current_state()
         display_trajectory.trajectory.append(plan)
         self.display_trajectory_publisher.publish(display_trajectory)
+
+    def promptMove(self):
+        try:
+          char = input("[Enter] request new coordinate, [Z] to exit: ")
+        except ValueError:
+            print("Invalid value. Enter a valid value.")
+        if char == "":
+            self.promptLocationAndMove()
+        elif char.lower() == "z":
+            rospy.signal_shutdown("")
+
+def moveStop():
+    print("Program exited. Goodbye.")

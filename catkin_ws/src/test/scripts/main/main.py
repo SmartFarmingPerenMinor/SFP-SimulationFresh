@@ -10,10 +10,10 @@ from world import worldBuilder
 
 def main():
     endEffectorMoverObject = endEffectorMover(sys.argv)
-    worldBuilderObj = worldBuilder(endEffectorMoverObject)
-    worldBuilderObj.addPlane("ground_plane")
+    # worldBuilderObj = worldBuilder(endEffectorMoverObject)
+    # worldBuilderObj.addPlane("ground_plane")
     # cameraViewerObject = cameraViewer()
-    depthViewerObject = depthViewer("/ur10e/camera1/depth/image_raw")
+    # depthViewerObject = depthViewer("/ur10e/camera1/depth/image_raw")
     endEffectorMoverObject.promptLocationAndMove()
 
 
