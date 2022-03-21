@@ -341,6 +341,14 @@
       </collision>
     </link>
 
+    <joint name="camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+    <parent link="camera_link"/>
+    <child link="camera_frame_optical"/>
+    </joint>
+    <link name="camera_frame_optical"/>
+
+
     <joint name="camera_joint" type="fixed">
     <axis xyz="0 1 0" />
     <origin xyz="0.005 0.0 0.055" rpy="0 0 0"/>
