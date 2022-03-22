@@ -14,7 +14,11 @@ def main():
     # worldBuilderObj.addPlane("ground_plane")
     # cameraViewerObject = cameraViewer()
     # depthViewerObject = depthViewer("/ur10e/camera1/depth/image_raw")
-    endEffectorMoverObject.promptLocationAndMove()
+    # endEffectorMoverObject.promptLocationAndMove()
+    wps = endEffectorMoverObject.set_waypoints()
+    endEffectorMoverObject.cartesian_path_execution(wps)
+    
+
 
 
 
