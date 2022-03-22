@@ -31,7 +31,6 @@ class depthViewer:
         # pixelpoints = cv2.findNonZero(mask)
         # print(pixelpoints)
         rows,cols = self.image.shape
-
         for i in range(rows):
             for j in range(cols):
                 k = self.image[i,j]
