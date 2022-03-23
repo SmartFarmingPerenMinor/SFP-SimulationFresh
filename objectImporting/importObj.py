@@ -16,8 +16,7 @@ class GazeboWorldGenerator():
         z = zPos -0.7
         tree = {"type": "tree", "name": objName, "x": xPos,
                 "y": yPos, "z": z, "solid": solid, "mesh": treePth}
-        #res = tree["z"]
-        #print(f"z: {z}, tree[\"z\"]: {res}")
+
         self.objects.append(tree)
 
     def clear(self):
@@ -72,9 +71,9 @@ def main():
             break
         elif (option == "tree"):
             name = input("give tree name: ")
-            x = float(input("give x position: "))
-            y = float(input("give y position: "))
-            z = float(input("give z position: "))
+            x = float(input("give x position, bv 0.7: "))
+            y = float(input("give y position, bv 0.7: "))
+            z = float(input("give z position, bv 0.0: "))
             solid = bool(input("is the object solid?\nGive \"True\" if obj is solid\nGive \"False\" if obj is not solid\nThe object is: "))
             worldgen.addTree(name, x, y, z, solid)
 
