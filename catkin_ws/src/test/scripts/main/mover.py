@@ -228,6 +228,11 @@ class endEffectorMover:
                 rospy.loginfo("Path planning failed with " +
                 str(fraction) + " success after " + str(attempts) + " attempts.")
 
+    def moveToTree(self, point, printPoint=False):
+        if (printPoint):
+            print (point)
+        self.moveTo(point["x"], point["y"], point["z"])
+
 def moveStop():
     print("Program exited. Goodbye.")
 

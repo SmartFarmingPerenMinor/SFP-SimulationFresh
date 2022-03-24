@@ -9,7 +9,7 @@ class PointCloud():
     points = []
 
     def __init__(self, pointCloud2_topic = "/ur10e/camera1/depth/points"):
-        rospy.init_node('pointCloud_subscriber', anonymous=True)
+        #rospy.init_node('pointCloud_subscriber', anonymous=True)
         random.seed(rospy.Time.now())
         rospy.Subscriber(pointCloud2_topic, PointCloud2, self.__callback, queue_size=1)
         rospy.spin()
