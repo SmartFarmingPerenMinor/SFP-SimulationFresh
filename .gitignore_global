@@ -1,4 +1,4 @@
 *.log
 /catkin_ws/src/test/worlds/myWorld.world
-*/__pycache__/
+/catkin_ws/src/test/scripts/main/__pycache__/
 */.vscode/
