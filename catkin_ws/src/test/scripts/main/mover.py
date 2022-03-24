@@ -227,7 +227,6 @@ class endEffectorMover:
             else:
                 rospy.loginfo("Path planning failed with " +
                 str(fraction) + " success after " + str(attempts) + " attempts.")
-    
 
 def moveStop():
     print("Program exited. Goodbye.")

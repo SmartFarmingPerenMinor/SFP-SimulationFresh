@@ -7,9 +7,11 @@ from mover import endEffectorMover
 from camera import cameraViewer
 from depth_camera import depthViewer
 from world import worldBuilder
+from octoload import OctoHandler
 
 def main():
     endEffectorMoverObject = endEffectorMover(sys.argv)
+    octomap_object = OctoHandler()
     # worldBuilderObj = worldBuilder(endEffectorMoverObject)
     # worldBuilderObj.addPlane("ground_plane")
     # cameraViewerObject = cameraViewer()
