@@ -14,7 +14,7 @@ This is a testplan written for the robotic arm simulation
 
 
 ### Installation of operating system
-Before starting the test you will have to install a version of ubuntu 20.**.** LTS [link](https://releases.ubuntu.com/20.04/). You can try it on a VM but preferably it will be a installation of the IOS on your PC as the VM can make troubles with your simulation software. Using a USB stick you can flash the drive using [balenaEtcher](https://www.balena.io/etcher/). Next off you will have to change the bootorder of your device, this is device specific so you would have to lookup your own device manual to find out but most oftenly you can open the bootmenu with F1,F2 or F3. Once this is changed you will boot from the USB and the installation will start. A in depth installation guide regarding the installation can be found [here](https://itsfoss.com/install-ubuntu/)
+Before starting the test you will have to install a version of ubuntu 20.**.** LTS [link](https://releases.ubuntu.com/20.04/). You can try it on a VM but preferably it will be a installation of the IOS on your PC as the VM can make troubles with your simulation software. Next off you will have to change the bootorder of your device, this is device specific so you would have to lookup your own device manual to find out but most oftenly you can open the bootmenu with F1,F2 or F3. Once this is changed you will boot from the USB and the installation will start. A in depth installation guide regarding the installation can be found [here](https://itsfoss.com/install-ubuntu/)
 
 #### config for VM version
 System -> Motherboard:
