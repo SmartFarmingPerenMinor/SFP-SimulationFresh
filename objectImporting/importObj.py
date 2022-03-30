@@ -3,13 +3,12 @@
 import jinja2
 from os import path
 
-
 class GazeboWorldGenerator():
     objects = []
     outputText = ""
 
     def getListOfImportableObjects(self) -> str:
-        return "The object that can be imported are:\ntree\nToo import objects type \"done\"\nGive action: "
+        return "The object that can be imported are:\ntree\nrow of tree's\nToo import objects type \"done\"\nGive action: "
 
     def addTree(self, objName: str, xPos: float, yPos: float, zPos: float, solid=False):
         treePth = path.abspath("../catkin_ws/src/test/models/peren.dae")
@@ -18,6 +17,39 @@ class GazeboWorldGenerator():
                 "y": yPos, "z": z, "solid": solid, "mesh": treePth}
 
         self.objects.append(tree)
+
+    def addLineOfTrees(self):
+        x = float(input("give x for the midle of the line: "))
+        y = float(input("give y for the midle of the line: "))
+        z = float(input("give z for the midle of the line: "))
+        treeCount = int(input("give desired amount of tree's: "))
+        RotateXAxis = input("\"true or false\"\ntranslate over the x-Axis: ")
+        RotateYAxis = input("\"true or false\"\ntranslate over the y-Axis: ")
+        RotateZAxis = input("\"true or false\"\ntranslate over the z-Axis: ")
+        return self.addRowOfTrees(x, y, z, RotateXAxis, RotateYAxis, RotateZAxis, treeCount)
+
+    def addRowOfTrees(self, x, y, z, RotateXAxis, RotateYAxis, RotateZAxis, treeCount) -> float:
+        center = treeCount/2
+        for tree in range(0, treeCount, 1):
+            pos = {"x": 0, "y":0, "z":0}
+
+            if (RotateXAxis == "true"):
+                pos["x"] = self.__calcOffset(0.7, x, center, tree)
+            else:
+                pos["x"] = x
+
+            if(RotateYAxis == "true"):
+                pos["y"] = self.__calcOffset(0.7, y, center, tree)
+            else:
+                pos["y"] = y
+
+            if(RotateZAxis == "true"):
+                pos["z"] = self.__calcOffset(0.7, z, center, tree)
+            else:
+                pos["z"] = z
+
+            name = f"tree{tree}"
+            self.addTree(name, pos["x"], pos["y"], pos["z"])
 
     def clear(self):
         self.objects = []
@@ -30,6 +62,15 @@ class GazeboWorldGenerator():
         f.write(f"{self.outputText}")
         f.close()
         self.clear
+
+    def __calcOffset(self, offset, axis, centerOfline, index) -> float:
+        if (index < centerOfline):
+            return (axis - (offset * (centerOfline - index)))
+        elif (index == centerOfline):
+            return axis
+        else:
+            return (axis + (offset * (index -centerOfline)))
+        return axis
 
     def __generateWorld(self):
         templateLoader = jinja2.FileSystemLoader("templates")
@@ -76,6 +117,8 @@ def main():
             z = float(input("give z position, bv 0.0: "))
             solid = bool(input("is the object solid?\nGive \"True\" if obj is solid\nGive \"False\" if obj is not solid\nThe object is: "))
             worldgen.addTree(name, x, y, z, solid)
+        elif (option == "row of tree's"):
+            worldgen.addLineOfTrees()
 
 
 if __name__ == '__main__':
