@@ -17,7 +17,7 @@ class depthViewer:
         rospy.on_shutdown(cv2.destroyAllWindows)
 
     def image_callback(self, msg: Image):
-        rospy.loginfo_once("Establishing depth img Callback")
+        rospy.loginfo("Establishing depth img Callback")
         image = self.bridge.imgmsg_to_cv2(msg, "passthrough")
         self.image = image
         self.depth_display(msg)
@@ -30,16 +30,15 @@ class depthViewer:
         # mask = mask[~np.isnan(self.image)]
         # pixelpoints = cv2.findNonZero(mask)
         # print(pixelpoints)
-        rows,cols = self.image.shape
-        for i in range(rows):
-            for j in range(cols):
-                k = self.image[i,j]
-                if (not np.isnan(k)):
-                    print(k)
+        # rows,cols = self.image.shape
+        # for i in range(rows):
+        #     for j in range(cols):
+        #         k = self.image[i,j]
+        #         if (not np.isnan(k)):
+        #             print(k)
         
         # min, max, minLoc, maxLoc = cv2.minMaxLoc(self.image)
         # x, y, w, h = self.crop_fastest(self.image)
-
         cv2.imshow('Depth view', self.image)
         cv2.waitKey(2)
         # print(self.image)

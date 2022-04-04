@@ -7,18 +7,17 @@ from mover import endEffectorMover
 from camera import cameraViewer
 from depth_camera import depthViewer
 from world import worldBuilder
-from octoload import OctoHandler
 
 def main():
-    endEffectorMoverObject = endEffectorMover(sys.argv)
-    octomap_object = OctoHandler()
+    # endEffectorMoverObject = endEffectorMover(sys.argv)
+    # octomap_object = OctoHandler()
     # worldBuilderObj = worldBuilder(endEffectorMoverObject)
     # worldBuilderObj.addPlane("ground_plane")
     # cameraViewerObject = cameraViewer()
-    # depthViewerObject = depthViewer("/ur10e/camera1/depth/image_raw")
+    depthViewerObject = depthViewer("/ur10e/camera1/depth/image_raw")
     # endEffectorMoverObject.promptLocationAndMove()
-    wps = endEffectorMoverObject.set_waypoints()
-    endEffectorMoverObject.cartesian_path_execution(wps)
+    # wps = endEffectorMoverObject.set_waypoints()
+    # endEffectorMoverObject.cartesian_path_execution(wps)
     
 
 
@@ -28,6 +27,8 @@ def main():
 if __name__ == "__main__":
     try: 
         while not rospy.is_shutdown():
+            rospy.init_node("main_process_node")
             main()
+            rospy.spin()
     except rospy.ROSInterruptException:
         rospy.loginfo("Process interrupted!")
