@@ -9,7 +9,7 @@ import cv2
 from cv_bridge import CvBridge
 
 class depthViewer:
-    def __init__(self, topic: str):
+    def __init__(self, topic: str = "/ur10e/camera1/depth/image_raw"):
         self.topic = topic
         self.bridge = CvBridge()
         self.image = None
