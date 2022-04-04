@@ -6,7 +6,7 @@ import rospy
 import moveit_commander
 #For vsc.. intellisense
 from moveit_commander import RobotCommander, PlanningSceneInterface, MoveGroupCommander
-from moveit_msgs.msg import DisplayTrajectory
+from moveit_msgs.msg import DisplayTrajectory, PlanningSceneWorld
 from geometry_msgs.msg import Pose
 
 #For arrow-keys in cmd
@@ -21,17 +21,25 @@ class endEffectorMover:
     def __init__(self, arguments):
         # init commander / rospy node
         moveit_commander.roscpp_initialize(arguments)
-        rospy.init_node("test_move")
 
         # instantiate the robot
         self.robot = RobotCommander()
 
         # instantiate the scene
         self.scene = PlanningSceneInterface()
+        psw = PlanningSceneWorld()
+        psw.octomap.header.stamp = rospy.Time.now()
+        psw.octomap.header.frame_id = 'base_link'
+
+        print("X: ", psw.octomap.origin.position.x)
+        print("Y: ", psw.octomap.origin.position.y)
+        print("Z: ", psw.octomap.origin.position.z)
+
 
         # instantiate moveGroupCommander
         group_name = 'manipulator'
         self.move_group = MoveGroupCommander(group_name)
+        self.waypoints = []
         self.max_tries: int = 30
         self.allowed_fraction: float = 0.95 # Between 0 and 1
             # Allow replanning to increase the odds of a solution
@@ -147,7 +155,7 @@ class endEffectorMover:
         display_trajectory.trajectory.append(plan)
         self.display_trajectory_publisher.publish(display_trajectory)
 
-    def set_waypoints(self) -> list:
+    def set_waypoints(self):
 
         # Get the name of the end-effector link
         end_effector_link = self.move_group.get_end_effector_link()
@@ -157,7 +165,7 @@ class endEffectorMover:
         start_pose.orientation.w = 1.0
 
         # Initialize the waypoints list
-        waypoints = []
+        self.waypoints = []
 
         # Set the first waypoint to be the starting pose
         # Append the pose to the waypoints list << For some reason this breaks the program.
@@ -175,7 +183,7 @@ class endEffectorMover:
                 wpose.position.x += float(rx)
                 wpose.position.y += float(ry)
                 wpose.position.z += float(rz)
-                waypoints.append(deepcopy(wpose))
+                self.waypoints.append(deepcopy(wpose))
 
                 if not promptContinue("[Enter] next phase, or [X] more waypoints: "):
                     continue
@@ -189,12 +197,13 @@ class endEffectorMover:
             except ValueError:
                 print("Invalid input")
         
-        return waypoints
 
-    def cartesian_path_execution(self, waypoints: list):
+    def cartesian_path_execution(self):
 
         fraction: float = 0.0
         attempts: int = 0
+
+        self.set_waypoints()
 
         if not promptContinue("Waypoints planned. [Enter] to execute, [X] to abort."):
             moveit_commander.roscpp_shutdown()
@@ -203,7 +212,7 @@ class endEffectorMover:
         self.move_group.construct_motion_plan_request()
         while fraction < 1.0 and attempts < self.max_tries:
             (plan, fraction) = self.move_group.compute_cartesian_path (
-            waypoints, # waypoint poses
+            self.waypoints, # waypoint poses
             0.01, # eef_step
             0.0, # jump_threshold
             True) # avoid_collisions
