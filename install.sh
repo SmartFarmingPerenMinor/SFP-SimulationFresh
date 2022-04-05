@@ -25,7 +25,17 @@ cd ./catkin_ws/src/test/worlds/ && ./setup.sh
 
 
 ## install realsens camara software
+# https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
 sudo add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo $(lsb_release -cs) main" -u
 sudo apt-get install librealsense2-dkms librealsense2-utils librealsense2-dev librealsense2-dbg -y
 sudo apt-get update && sudo apt-get upgrade -y 
+
+
+## orbbec astras pro camera
+# http://wiki.ros.org/astra_camera
+sudo apt install ros-noetic-rgbd-launch libuvc-dev ros-noetic--libuvc-camera ros-noetic-libuvc-ros -y
+cd /catkin_ws/src && git clone https://github.com/orbbec/ros_astra_camera
+mv ros_astra_camera astra_camera
+./astra_camera/scripts/create_udev_rules
+cd ../.. && catkin_make --pkg astra_camera
