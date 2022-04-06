@@ -37,5 +37,6 @@ sudo apt-get update && sudo apt-get upgrade -y
 sudo apt install ros-noetic-rgbd-launch libuvc-dev ros-noetic--libuvc-camera ros-noetic-libuvc-ros -y
 cd /catkin_ws/src && git clone https://github.com/orbbec/ros_astra_camera
 mv ros_astra_camera astra_camera
+chmod +x ./astra_camera/scripts/create_udev_rules
 ./astra_camera/scripts/create_udev_rules
 cd ../.. && catkin_make --pkg astra_camera
